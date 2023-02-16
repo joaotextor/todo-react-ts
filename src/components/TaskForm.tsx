@@ -22,8 +22,6 @@ export default function TaskForm ({btnText}: ITaskFormProps) {
     const handleChange: Record<string, any> = {
         set: (e: React.ChangeEvent<HTMLInputElement>) => {
             handleChange[e.target.name](e.target.value)
-            console.log(title)
-            console.log(difficulty)
         },
 
         title: (data: string) => {
