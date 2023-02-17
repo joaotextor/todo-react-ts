@@ -20,8 +20,8 @@
     cursor: pointer;
 }
 
-.form input[type="button"]:hover {
-    background-color: fff;
+.form input[type="submit"]:hover {
+    background-color: #fff;
     border-color: #282c34;
 }
 
