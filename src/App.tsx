@@ -13,6 +13,7 @@ import {ITask} from './interfaces/Task'
 function App() {
 
   const [taskList, setTaskList] = React.useState<ITask[]>([])
+  const [taskToUpdate, setTaskToUpdate] = React.useState<ITask | null>(null)
 
   const deleteTask = (id: number) => {
     setTaskList(
@@ -31,8 +32,24 @@ function App() {
     }
   }
 
-  const editTask = () => {
+  const editTask = (task: ITask):void => {
     modalHideShow(true)
+    setTaskToUpdate(task)
+  }
+
+  const updateTask = ({id, title, difficulty}: ITask) => {
+
+    const updatedTask: ITask = {id, title, difficulty}
+
+    const updatedItems = taskList.map(task => {
+      return task.id === updatedTask.id
+        ? updatedTask
+        : task
+    })
+
+    setTaskList(updatedItems)
+
+    modalHideShow(false)
   }
 
   return (
@@ -41,7 +58,9 @@ function App() {
       <TaskForm
         btnText="Edit Task"
         taskList={taskList}
+        task={taskToUpdate}
         setTaskList={setTaskList}
+        handleUpdate={updateTask}
       />
     }/>
     <Header/>

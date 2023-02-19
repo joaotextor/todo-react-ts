@@ -9,30 +9,46 @@ export interface ITaskFormProps {
     btnText: string
     taskList: ITask[]
     setTaskList?: React.Dispatch<React.SetStateAction<ITask[]>>
+    task?: ITask | null
+    handleUpdate?({id, title, difficulty}: ITask): void
 }
 
-export default function TaskForm ({btnText, taskList, setTaskList}: ITaskFormProps) {
+export default function TaskForm ({btnText, taskList, setTaskList, task, handleUpdate}: ITaskFormProps) {
 
     const [id, setId] = React.useState<number>(0)
     const [title, setTitle] = React.useState<string>("")
     const [difficulty, setDifficulty] = React.useState<number>(0)
 
+    React.useEffect(() => {
+
+        if (task) {
+            setId(task!.id)
+            setTitle(task!.title)
+            setDifficulty(task!.difficulty)
+        }
+
+    }, [task])
+
     const addTaskHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const id = Math.floor(Math.random() * 99999)
+        if(handleUpdate) {
+            handleUpdate({id, title, difficulty})
+        } else {
+            const id = Math.floor(Math.random() * 99999)
 
-        const newTask: ITask = {id, title, difficulty} 
+            const newTask: ITask = {id, title, difficulty}
+    
+            setTaskList!([
+                ...taskList,
+                newTask
+            ])
+    
+            setTitle("")
+            setDifficulty(0)
+        }
 
-        setTaskList!([
-            ...taskList,
-            newTask
-        ])
 
-        setTitle("")
-        setDifficulty(0)
-
-        console.log(taskList)
     }
 
     const handleChange: Record<string, any> = {
